@@ -1,29 +1,43 @@
 console.log('test')
 
+var questions = {}
 
-// function startButton
- // hide startButton
- // on click call startGame
+var titleMessage = document.querySelector("#titleMessage");
+var startButton = document.querySelector("#start-button");
+var questionBox = document.querySelector('#question-box');
 
-// function startGame
+startButton.addEventListener("click", function(event){
+  event.preventDefault();
+
+  titleMessage.textContent = "Good luck!"
+  clickStartButton()
+})
+
+function clickStartButton() {
+  startButton.textContent = "Reset"
+  clickStartGame();
+}
+
+function clickStartGame () {
+  // call getQuestions 
   // set time interval timer of 1second.
     // increment time
-     // call updateTime interval
-     // call updateQuestion
+    // call updateTime interval
+    // call updateQuestion
 
-     // call addAnswerOptions
+    // call addAnswerOptions
       // add on click to answers container
-       // call clickCheckAnswer
-       // call updateScore
+      // call clickCheckAnswer
+      // call updateScore
 
-     // check time if 0 .
+    // check time if 0 .
       // call endGame.
 
     // clear time interval
+}
 
-
-
-
+// function getQuestions
+  // questionBox.textContent = ""
 
 
 // function update time interval
