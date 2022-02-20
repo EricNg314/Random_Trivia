@@ -2,6 +2,7 @@ console.log("test");
 
 var titleMessage = document.querySelector("#titleMessage");
 var startButton = document.querySelector("#start-button");
+var resetButton = document.querySelector("#reset-button");
 var questionBox = document.querySelector("#question-box");
 
 var gameInitiated = false;
@@ -16,24 +17,30 @@ var difficultyMode = "easy";
 var questions = {};
 var questionNumber = 0;
 var score = 0;
-var timer;
 var reset = false;
-var isActive = true;
+var isActive = false;
 
 startButton.addEventListener("click", function (event) {
   event.preventDefault();
 
   titleMessage.textContent = "Loading questions, good luck!";
-  clickStartButton();
+  startButton.classList.add("hidden");
+  resetButton.classList.remove("hidden");
+  startGame();
 });
 
-function clickStartButton() {
-  clickStartGame();
-}
 
-async function clickStartGame() {
-  startButton.textContent = "Reset";
-  clearInterval(timer);
+resetButton.addEventListener("click", function (event) {
+  reset = true;
+  event.preventDefault();
+  if (isActive === false){
+    startGame()
+  }
+});
+
+async function startGame() {
+  // clearInterval(timer);
+  isActive = true
   questions = await getQuestions();
   questionNumber = 0;
   score = 0;
@@ -49,38 +56,54 @@ async function clickStartGame() {
 
   questionNumber++;
 
-
   //  set time interval timer of 1second.
-  timer = setInterval(function () {
+  var timerInterval = setInterval(function () {
+    console.log("timerInterval: ", timerInterval );
     if (reset === true) {
-      clearInterval(timer)
+      reset = false;
+      isActive = false;
+      clearInterval(timerInterval)
+      startGame();
     } else {
       if (timeRemaining > 0) {
-        console.log("entered timeRemaining");
+        // console.log("entered timeRemaining");
+        timeRemaining--;
       } else {
-        console.log("entered timeRemaining else");
-        clearInterval(timer);
+        isActive = false;
+        clearInterval(timerInterval);
         endGame();
-        timer = undefined;
       }
+      updateTime();
     }
-    timeRemaining--;
-    updateTime();
   }, 1000);
+  
+
   
 }
 
 async function getQuestions() {
   // questionBox.textContent = ""
-  var apiResponse = await fetch(
-    "https://api.trivia.willfry.co.uk/questions?limit=1"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      // console.log(data)
-      return data;
-    });
-
+  // var apiResponse = await fetch(
+  //   "https://api.trivia.willfry.co.uk/questions?limit=1"
+  // )
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data)
+  //     return data;
+  //   });
+    var apiResponse = [
+    {
+        "category": "Food and Drink",
+        "correctAnswer": "Sesame ",
+        "id": 10638,
+        "incorrectAnswers": [
+            "Sunflower",
+            "Chia"
+        ],
+        "question": "Which seed is the basic ingredient for tahini paste?",
+        "type": "Multiple Choice"
+    }
+  ]
   return apiResponse;
 }
 
