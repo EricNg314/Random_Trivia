@@ -108,6 +108,15 @@ p {
   flex-direction: row;
 }
 
+.flex-center {
+  justify-content: center;
+}
+
+.scoreTable, tbody, th, tr, td {
+  border: 1px solid var(--primary-txt-color);
+  padding: .5rem;
+}
+
 .section {
   margin-top: 3rem;
 }
@@ -126,7 +135,25 @@ p {
 .button {
   width: 25%;
   padding: 1rem;
-  margin: 0 auto 1rem auto;
+  margin: 0 1rem 1rem 1rem;
+}
+
+.save-container {
+  padding: 0rem 1rem 1rem 1rem;
+}
+
+.submit-button {
+  width: 25%;
+  padding: 1rem;
+  margin: 0 1rem 0rem 1rem;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.input-texts {
+  padding: 0.5rem
 }
 
 .message-box {

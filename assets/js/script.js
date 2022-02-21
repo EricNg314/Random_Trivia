@@ -1,5 +1,3 @@
-console.log("test");
-
 var difficultySelector = document.querySelector("#difficultySelector");
 var titleMessage = document.querySelector("#titleMessage");
 var timerMessage = document.querySelector("#timerMessage");
@@ -9,9 +7,14 @@ var questionBox = document.querySelector("#questionBox");
 var questionAnswers = document.querySelector("#questionAnswers");
 var answerResult = document.querySelector("#answerResult");
 var scoreMessage = document.querySelector("#scoreMessage");
+var saveScoreButton = document.querySelector("#saveScoreButton");
+var scoreBoard = document.querySelector("#scoreBoard");
+var submitScoreButton = document.querySelector("#submitScoreButton");
+var submitScore = document.querySelector("#submitScore");
+var username = document.querySelector("#username");
 
 var gameInitiated = false;
-var timeDefault = 60;
+var timeDefault = 5;
 var timeRemaining = 0;
 var difficulty = {
   easy: { timeLoss: 0, answers: 3 },
@@ -36,14 +39,12 @@ difficultySelector.addEventListener("click", function (event) {
     }
     difficultyMode = modeEle.getAttribute('data-difficulty')
     modeEle.classList.add("selected")
-    console.log("difficultyMode: ", difficultyMode)
   }
 });
 
 startButton.addEventListener("click", function (event) {
   event.preventDefault();
 
-  titleMessage.textContent = "Random Trivia - Good luck!";
   startButton.classList.add("hidden");
   resetButton.classList.remove("hidden");
   startGame();
@@ -53,15 +54,40 @@ startButton.addEventListener("click", function (event) {
 resetButton.addEventListener("click", function (event) {
   reset = true;
   event.preventDefault();
+
+  scoreBoard.classList.add('hidden');
+  questionBox.classList.remove('hidden');
+  questionAnswers.classList.remove('hidden');
   if (isActive === false){
     startGame()
   }
 });
 
+saveScoreButton.addEventListener("click", function (event) {
+  reset = true;
+  event.preventDefault();
+  saveScoreButton.classList.add("hidden");
+  submitScore.classList.remove("hidden");
+  clickSaveScore();
+});
+
+submitScoreButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  var name = username.value
+  var currentStorage = JSON.parse(localStorage.getItem('scoreBoard'));
+  if(currentStorage === null){
+    currentStorage = []
+  }
+
+  currentStorage.push({'score': score, 'difficulty': difficultyMode ,'name': name})
+  localStorage.setItem('scoreBoard', JSON.stringify(currentStorage));
+  updateScoreBoard();
+  submitScore.classList.add("hidden");
+
+});
 
 questionAnswers.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log("questions: ", questions)
   if(isActive === true){
     clickCheckAnswer(event);
   }
@@ -69,12 +95,12 @@ questionAnswers.addEventListener("click", function (event) {
 
 
 async function startGame() {
+  titleMessage.textContent = "Random Trivia - Good luck!";
   isActive = true
   questionNumber = 0;
   questions = await getQuestions();
   score = 0;
   timeRemaining = timeDefault;
-  console.log(questions);
 
   // Avoid update if resetting.
   if (reset !== true) {
@@ -83,15 +109,14 @@ async function startGame() {
 
   //  set time interval timer of 1second.
   var timerInterval = setInterval(function () {
-    console.log("timerInterval: ", timerInterval );
     if (reset === true) {
+      // waiting for timerInterval to be cleared before resetting.
       reset = false;
       isActive = false;
       clearInterval(timerInterval)
       startGame();
     } else {
       if (timeRemaining > 0) {
-        // console.log("entered timeRemaining");
         timeRemaining--;
       } else {
         // Resetting if timer is out.
@@ -110,50 +135,17 @@ async function startGame() {
 
 async function getQuestions() {
   // questionBox.textContent = ""
-  // var apiResponse = await fetch(
-  //   "https://api.trivia.willfry.co.uk/questions?limit=20"
-  // )
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data)
-  //     window.apiResponseData  = data
-  //     return data;
-  //   });
-    var apiResponse = [
-      {
-          "category": "Music",
-          "correctAnswer": "Megadeath",
-          "id": 26770,
-          "incorrectAnswers": [
-              "Metallica",
-              "Slayer"
-          ],
-          "question": "Who had a UK top twenty hit in 1990 with \"No More Mr Nice Guy\"?",
-          "type": "Multiple Choice"
-      },
-      {
-          "category": "Science",
-          "correctAnswer": "ants",
-          "id": 7480,
-          "incorrectAnswers": [
-              "fresh water environments, particularly lakes",
-              "the Soviet Union",
-              "prehistoric metazoans ",
-              "the effects of radiation upon living organisms",
-              "the nature of Buddha",
-              "butterflies and moths",
-              "friction at very small scale",
-              "the signification and application of words"
-          ],
-          "question": "What is Myrmecology the study of?",
-          "type": "Multiple Choice"
-      }
-  ]
+  var apiResponse = await fetch(
+    "https://api.trivia.willfry.co.uk/questions?limit=20"
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // console.log(data)
+      // window.apiResponseData  = data
+      return data;
+    });
   return apiResponse;
 }
-
-// function update time interval
-// set time interval
 
 function updateTime() {
   // display new time
@@ -181,9 +173,6 @@ function updateTriviaQA(questions, questionNumber) {
   // Adding +1 for last option position.
   var insertAnswerLoc = getRandomInt(0, incorrectAnswers.length + 1);
 
-  console.log("correctAnswer: ", correctAnswer);
-  console.log("incorrectAnswers: ", incorrectAnswers);
-
   for (var i = 0; i < incorrectAnswers.length; i++) {
     if (i === insertAnswerLoc && answerAdded !== true) {
       outputChoices.push(correctAnswer);
@@ -210,8 +199,6 @@ function updateTriviaQA(questions, questionNumber) {
     questionAnswers.append(button)
 
   }
-
-
 }
 
 function getRandomInt(min, max) {
@@ -239,9 +226,7 @@ function clickCheckAnswer(event) {
   // Setting message to show right/wrong temporarily.
   var answerMsgTimer = 2;
   var answerMsgInterval = setInterval(function () {
-    // If there are no more words left in the message
     if (answerMsgTimer <= 0) {
-      // Use `clearInterval()` to stop the timer
       answerResult.classList.add("hidden");
       clearInterval(answerMsgInterval);
     } else {
@@ -261,19 +246,74 @@ function clickCheckAnswer(event) {
   }
 }
 
-// function updateScore
-
 function endGame() {
-  console.log("game ended");
-  // show saveScore button
-  // add on click call clickSaveScore button.
-  // show restartButton
-  // add on click call clickRestartButton
+  titleMessage.textContent = "Random Trivia - Out of Time!";
+  // show saveScore button, hide questions
+  saveScoreButton.classList.remove('hidden');
+  questionBox.classList.add('hidden');
+  questionAnswers.classList.add('hidden');
+
 }
 
-// function clickSaveScore
-// save to localstorage.
-// display score.
+function clickSaveScore() {
+  scoreBoard.classList.remove('hidden');
+  updateScoreBoard();
+}
 
-// function clickRestartButton
-// if call startGame, reset game/scores.
+function updateScoreBoard(){
+  var currentStorage = JSON.parse(localStorage.getItem('scoreBoard'));
+  var scoreBoardTable = document.querySelector('#scoreBoardTable')
+
+  scoreBoardTable.innerHTML = "";
+  
+  // Creating the table headers.
+  var tableHeaderRow = document.createElement('tr');
+  var scoreHeaderEle = document.createElement('th');
+  var difficultyHeaderEle = document.createElement('th');
+  var nameHeaderEle = document.createElement('th');
+
+  scoreHeaderEle.textContent = "Score"
+  difficultyHeaderEle.textContent = "Difficulty"
+  nameHeaderEle.textContent = "Name"
+
+  tableHeaderRow.append(scoreHeaderEle);
+  tableHeaderRow.append(difficultyHeaderEle);
+  tableHeaderRow.append(nameHeaderEle);
+  scoreBoardTable.append(tableHeaderRow);
+
+  // sort the current storage
+  if(currentStorage.length > 1){
+    currentStorage.sort( compareDescending );
+  }
+
+  // Append each row of saved scores
+  for(var i = 0; i < currentStorage.length; i++){
+    var tableRow = document.createElement('tr');
+    var scoreEle = document.createElement('td');
+    var difficultyEle = document.createElement('td');
+    var nameEle = document.createElement('td');
+
+    scoreEle.textContent = currentStorage[i].score
+    difficultyEle.textContent = currentStorage[i].difficulty
+    nameEle.textContent = currentStorage[i].name
+
+    tableRow.append(scoreEle);
+    tableRow.append(difficultyEle);
+    tableRow.append(nameEle);
+    scoreBoardTable.append(tableRow);
+  }
+
+}
+
+function compareDescending( a, b ) {
+// sort current object and next object by score key
+  if ( a.score > b.score ){
+    return -1;
+  }
+  if ( a.score < b.score ){
+    return 1;
+  }
+  return 0;
+}
+
+
