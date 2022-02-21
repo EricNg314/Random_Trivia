@@ -1,5 +1,6 @@
 console.log("test");
 
+var difficultySelector = document.querySelector("#difficultySelector");
 var titleMessage = document.querySelector("#titleMessage");
 var timerMessage = document.querySelector("#timerMessage");
 var startButton = document.querySelector("#startButton");
@@ -7,21 +8,37 @@ var resetButton = document.querySelector("#resetButton");
 var questionBox = document.querySelector("#questionBox");
 var questionAnswers = document.querySelector("#questionAnswers");
 var answerResult = document.querySelector("#answerResult");
+var scoreMessage = document.querySelector("#scoreMessage");
 
 var gameInitiated = false;
-var timeDefault = 5;
+var timeDefault = 60;
 var timeRemaining = 0;
 var difficulty = {
-  easy: { time: 0, answers: 3 },
-  medium: { time: 1, answers: 4 },
-  hard: { time: 3, answers: 5 },
+  easy: { timeLoss: 0, answers: 3 },
+  medium: { timeLoss: 1, answers: 4 },
+  hard: { timeLoss: 3, answers: 5 },
 };
-var difficultyMode = "easy";
+var difficultyMode = "medium";
 var questions = {};
 var questionNumber = 0;
 var score = 0;
 var reset = false;
 var isActive = false;
+
+difficultySelector.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  var modeEle = event.target
+
+  if(isActive !== true && modeEle.matches('button')){
+    for(var i=0; i < difficultySelector.childElementCount; i++){
+      difficultySelector.children[i].classList.remove("selected");
+    }
+    difficultyMode = modeEle.getAttribute('data-difficulty')
+    modeEle.classList.add("selected")
+    console.log("difficultyMode: ", difficultyMode)
+  }
+});
 
 startButton.addEventListener("click", function (event) {
   event.preventDefault();
@@ -41,10 +58,13 @@ resetButton.addEventListener("click", function (event) {
   }
 });
 
+
 questionAnswers.addEventListener("click", function (event) {
   event.preventDefault();
   console.log("questions: ", questions)
-  clickCheckAnswer(event);
+  if(isActive === true){
+    clickCheckAnswer(event);
+  }
 });
 
 
@@ -74,7 +94,9 @@ async function startGame() {
         // console.log("entered timeRemaining");
         timeRemaining--;
       } else {
+        // Resetting if timer is out.
         isActive = false;
+        questions = {};
         clearInterval(timerInterval);
         endGame();
       }
@@ -89,7 +111,7 @@ async function startGame() {
 async function getQuestions() {
   // questionBox.textContent = ""
   // var apiResponse = await fetch(
-  //   "https://api.trivia.willfry.co.uk/questions?limit=2"
+  //   "https://api.trivia.willfry.co.uk/questions?limit=20"
   // )
   //   .then((response) => response.json())
   //   .then((data) => {
@@ -201,14 +223,16 @@ function getRandomInt(min, max) {
 function clickCheckAnswer(event) {
   var clickedAnswer = event.target.textContent;
   var correctAnswer = questions[questionNumber].correctAnswer;
+  var timeLoss = difficulty[difficultyMode].timeLoss
 
   if (correctAnswer === clickedAnswer) {
     score++;
+    scoreMessage.textContent = "Score: " + score;
     answerResult.textContent = "Correct";
   } else {
-    timeRemaining--;
+    timeRemaining = timeRemaining - timeLoss;
     updateTime();
-    answerResult.textContent = "Wrong";
+    answerResult.textContent = "Wrong - Time deducted: " + timeLoss + " seconds.";
   }
   answerResult.classList.remove("hidden");
 
@@ -225,9 +249,16 @@ function clickCheckAnswer(event) {
     }
   }, 1000);
 
+  // Moving to next question
   questionNumber++;
-  updateTriviaQA(questions, questionNumber);
-
+  // Check if end of questions.
+  if (questions.length > questionNumber){
+    updateTriviaQA(questions, questionNumber);
+  } else {
+    isActive = false;
+    timeRemaining = 0;
+    updateTime();
+  }
 }
 
 // function updateScore

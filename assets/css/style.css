@@ -78,6 +78,8 @@ p {
   background-color: var(--quaternary-bg-color);
 }
 
+
+
 .spotlight-image-container {
   display: flex;
   width: unset;
@@ -100,6 +102,10 @@ p {
 .flex-column {
   display: flex;
   flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
 .section {
@@ -174,7 +180,7 @@ p {
 }
 
 #answer-result {
-  border-top: 1px solid var(--primary-txt-color);;
+  border-top: 1px solid var(--primary-txt-color);
 }
 
 .hide-on-sm {
@@ -227,6 +233,10 @@ p {
   .hide-on-xl {
     display: block;
   }
+}
+
+.selected {
+  background-color: var(--secondary-bg-color)
 }
 
 .hidden {
