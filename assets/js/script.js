@@ -30,7 +30,7 @@ difficultySelector.addEventListener("click", function (event) {
 
   var modeEle = event.target
 
-  if(isActive !== true && modeEle.matches('button')){
+  if(modeEle.matches('button')){
     for(var i=0; i < difficultySelector.childElementCount; i++){
       difficultySelector.children[i].classList.remove("selected");
     }
