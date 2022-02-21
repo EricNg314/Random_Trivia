@@ -54,7 +54,8 @@ startButton.addEventListener("click", function (event) {
 resetButton.addEventListener("click", function (event) {
   reset = true;
   event.preventDefault();
-
+  score = 0;
+  scoreMessage.textContent = "Score: " + score;
   scoreBoard.classList.add('hidden');
   questionBox.classList.remove('hidden');
   questionAnswers.classList.remove('hidden');
@@ -164,6 +165,7 @@ function updateTriviaQA(questions, questionNumber) {
 
   var numbOfOptions = difficulty[difficultyMode].answers;
 
+  // console.log(correctAnswer);
   // Restricting # of available incorrect options based on difficulty.
   if (incorrectAnswers.length >= numbOfOptions) {
     // subtracting 1 from list to make room for correct answer.
