@@ -130,6 +130,7 @@ p {
 
 .answer-button {
   width: 100%;
+  margin: .5rem 0rem;
   padding: 1rem;
   text-align: left;
 }
@@ -137,7 +138,7 @@ p {
 .question-list {
   display: flex;
   flex-wrap: wrap;
-  padding: 1rem 0.5rem;
+  /* padding: 1rem 0.5rem; */
 }
 
 .question-header {
@@ -170,6 +171,10 @@ p {
 .question-items {
   flex-basis: 100%;
   padding: 0.5rem;
+}
+
+#answer-result {
+  border-top: 1px solid var(--primary-txt-color);;
 }
 
 .hide-on-sm {

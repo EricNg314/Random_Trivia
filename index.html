@@ -26,25 +26,30 @@
       </section>
       <section id="question" class="section ">
         <h2 id='titleMessage' class="section-header color-tertiary">Ready to play?</h2>
+        <div class="section-header color-tertiary">
+          <p id='timerMessage' class="">Time Remaining?</p>
+          <p id='scoreMessage' class="">Score: 0</p>
+        </div>
         <div class="section-content flex-column">
-          <button id="start-button" class="color-tertiary button">Start Game</button>
-          <button id="reset-button" class="color-tertiary button hidden">Reset Game</button>
-          <p id="question-box" class="color-tertiary message-box">Incorrect answers will decrease by second.</p>
+          <button id="startButton" class="color-tertiary button">Start Game</button>
+          <button id="resetButton" class="color-tertiary button hidden">Reset Game</button>
         </div>
-        <div class="section-content question-list nothidden">
-          <section class="question-items">
+        <p id="questionBox" class="color-tertiary message-box">Incorrect answers will decrease by second.</p>
+        <div id="questionAnswers" class="section-content question-list nothidden">
+          <!-- <section class="question-items"> -->
             <button class="color-tertiary answer-button">placeholder</button>
-          </section>
-          <section class="question-items">
+          <!-- </section> -->
+          <!-- <section class="question-items"> -->
             <button class="color-tertiary answer-button">placeholder</button>
-          </section>
-          <section class="question-items">
+          <!-- </section> -->
+          <!-- <section class="question-items"> -->
             <button class="color-tertiary answer-button">placeholder</button>
-          </section>
-          <section class="question-items">
+          <!-- </section> -->
+          <!-- <section class="question-items"> -->
             <button class="color-tertiary answer-button">placeholder</button>
-          </section>
+          <!-- </section> -->
         </div>
+        <p id="answerResult" class="section-content hidden">Incorrect</p>
         <a href="#header" aria-label="Jump to top of page">Back to top.</a>
       </section>
     </div>
