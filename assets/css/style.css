@@ -78,9 +78,7 @@ p {
   background-color: var(--quaternary-bg-color);
 }
 
-
-
-.score-image-container {
+.score-container {
   display: flex;
   width: unset;
   margin: 0 auto 1rem auto;
@@ -96,7 +94,7 @@ p {
   margin: 1rem auto 0rem auto;
   width: 75%;
   padding: 0rem 2rem 2rem 2rem;
-  min-height: 80vh;
+  min-height: 100vh;
 }
 
 .flex-column {
@@ -154,6 +152,10 @@ p {
 
 .input-texts {
   padding: 0.5rem
+}
+
+.message-text {
+  margin-bottom: 0.5rem
 }
 
 .message-box {
@@ -221,7 +223,7 @@ p {
 
 @media screen and (max-width: 768px) {
   * {
-    font-size: 20px;
+    font-size: 18px;
   }
   header {
     display: block;
@@ -244,8 +246,8 @@ p {
 }
 
 @media screen and (max-width: 576px) {
-  .score-image-container {
-    width: 100%;
+  * {
+    font-size: 16px;
   }
 
   .question-items {

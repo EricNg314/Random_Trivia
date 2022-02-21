@@ -15,7 +15,6 @@
   <header id="header" class="color-secondary">
     <h1>Eric Ng</h1>
     <p class="header-text">Having some fun with trivia.</p>
-
   </header>
   <main class="page-container color-primary">
     <div class="main-container color-secondary">
@@ -27,9 +26,8 @@
             <button data-difficulty="medium" class="color-quaternary button selected">Medium</button>
             <button data-difficulty="hard" class="color-quaternary button">Hard</button>
           </div>
-          <p id='timerMessage' class="">Time Remaining: 0</p>
-          <p id='scoreMessage' class="">Score: 0</p>
-
+          <p id='timerMessage' class="message-text">Time Remaining: 90</p>
+          <p id='scoreMessage' class="message-text">Score: 0</p>
         </div>
         <div class="section-content flex-column flex-center">
           <div id="submitScore" class="flex-row flex-center align-center save-container hidden">
@@ -45,27 +43,18 @@
         </div>
                   
         <div id="scoreBoard" class="section-score hidden">
-          <div class="score-image-container">
+          <div class="score-container">
             <table id="scoreBoardTable" class="color-tertiary scoreTable">
               <tr>
                 <th>Score</th>
                 <th>Difficulty</th>
                 <th>Name</th>
               </tr>
-              <tr>
-                <td>1</td>
-                <td>Medium</td>
-                <td>Me</td>
-              </tr>
             </table>
           </div>
         </div>
         <p id="questionBox" class="color-tertiary message-box">Difficulty determines time lost and number of potential options.</p>
         <div id="questionAnswers" class="section-content question-list nothidden">
-          <button class="color-tertiary answer-button">placeholder</button>
-          <button class="color-tertiary answer-button">placeholder</button>
-          <button class="color-tertiary answer-button">placeholder</button>
-          <button class="color-tertiary answer-button">placeholder</button>
         </div>
         <p id="answerResult" class="section-content hidden">Incorrect</p>
         <a href="#header" aria-label="Jump to top of page">Back to top.</a> 

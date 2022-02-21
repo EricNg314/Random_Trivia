@@ -14,7 +14,7 @@ var submitScore = document.querySelector("#submitScore");
 var username = document.querySelector("#username");
 
 var gameInitiated = false;
-var timeDefault = 5;
+var timeDefault = 90;
 var timeRemaining = 0;
 var difficulty = {
   easy: { timeLoss: 0, answers: 3 },
