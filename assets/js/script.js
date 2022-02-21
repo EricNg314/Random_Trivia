@@ -1,9 +1,12 @@
 console.log("test");
 
 var titleMessage = document.querySelector("#titleMessage");
-var startButton = document.querySelector("#start-button");
-var resetButton = document.querySelector("#reset-button");
-var questionBox = document.querySelector("#question-box");
+var timerMessage = document.querySelector("#timerMessage");
+var startButton = document.querySelector("#startButton");
+var resetButton = document.querySelector("#resetButton");
+var questionBox = document.querySelector("#questionBox");
+var questionAnswers = document.querySelector("#questionAnswers");
+var answerResult = document.querySelector("#answerResult");
 
 var gameInitiated = false;
 var timeDefault = 5;
@@ -38,23 +41,25 @@ resetButton.addEventListener("click", function (event) {
   }
 });
 
+questionAnswers.addEventListener("click", function (event) {
+  event.preventDefault();
+  console.log("questions: ", questions)
+  clickCheckAnswer(event);
+});
+
+
 async function startGame() {
-  // clearInterval(timer);
   isActive = true
-  questions = await getQuestions();
   questionNumber = 0;
+  questions = await getQuestions();
   score = 0;
   timeRemaining = timeDefault;
-  // console.log('test2')
   console.log(questions);
 
-  updateTriviaQA(questions, questionNumber);
-
-  // add on click to answers container
-  // call clickCheckAnswer
-  // call updateScore
-
-  questionNumber++;
+  // Avoid update if resetting.
+  if (reset !== true) {
+    updateTriviaQA(questions, questionNumber);
+  }
 
   //  set time interval timer of 1second.
   var timerInterval = setInterval(function () {
@@ -84,25 +89,43 @@ async function startGame() {
 async function getQuestions() {
   // questionBox.textContent = ""
   // var apiResponse = await fetch(
-  //   "https://api.trivia.willfry.co.uk/questions?limit=1"
+  //   "https://api.trivia.willfry.co.uk/questions?limit=2"
   // )
   //   .then((response) => response.json())
   //   .then((data) => {
   //     console.log(data)
+  //     window.apiResponseData  = data
   //     return data;
   //   });
     var apiResponse = [
-    {
-        "category": "Food and Drink",
-        "correctAnswer": "Sesame ",
-        "id": 10638,
-        "incorrectAnswers": [
-            "Sunflower",
-            "Chia"
-        ],
-        "question": "Which seed is the basic ingredient for tahini paste?",
-        "type": "Multiple Choice"
-    }
+      {
+          "category": "Music",
+          "correctAnswer": "Megadeath",
+          "id": 26770,
+          "incorrectAnswers": [
+              "Metallica",
+              "Slayer"
+          ],
+          "question": "Who had a UK top twenty hit in 1990 with \"No More Mr Nice Guy\"?",
+          "type": "Multiple Choice"
+      },
+      {
+          "category": "Science",
+          "correctAnswer": "ants",
+          "id": 7480,
+          "incorrectAnswers": [
+              "fresh water environments, particularly lakes",
+              "the Soviet Union",
+              "prehistoric metazoans ",
+              "the effects of radiation upon living organisms",
+              "the nature of Buddha",
+              "butterflies and moths",
+              "friction at very small scale",
+              "the signification and application of words"
+          ],
+          "question": "What is Myrmecology the study of?",
+          "type": "Multiple Choice"
+      }
   ]
   return apiResponse;
 }
@@ -154,6 +177,18 @@ function updateTriviaQA(questions, questionNumber) {
     answerAdded = true;
   }
 
+  // Clear current choices
+  questionAnswers.innerHTML = "";
+
+  // Adding answer buttons.
+  for (var j=0; j < outputChoices.length; j++){
+    var button = document.createElement('button');
+    button.classList.add("color-tertiary", "answer-button");
+    button.textContent = outputChoices[j]
+    questionAnswers.append(button)
+
+  }
+
 
 }
 
@@ -163,14 +198,36 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function clickCheckAnswer() {
-  var answer = false;
-  if (answer === true) {
+function clickCheckAnswer(event) {
+  var clickedAnswer = event.target.textContent;
+  var correctAnswer = questions[questionNumber].correctAnswer;
+
+  if (correctAnswer === clickedAnswer) {
+    score++;
+    answerResult.textContent = "Correct";
   } else {
-    timeRemaining = timeRemaining - difficulty[difficultyMode].time;
+    timeRemaining--;
     updateTime();
+    answerResult.textContent = "Wrong";
   }
-  return answer;
+  answerResult.classList.remove("hidden");
+
+  // Setting message to show right/wrong temporarily.
+  var answerMsgTimer = 2;
+  var answerMsgInterval = setInterval(function () {
+    // If there are no more words left in the message
+    if (answerMsgTimer <= 0) {
+      // Use `clearInterval()` to stop the timer
+      answerResult.classList.add("hidden");
+      clearInterval(answerMsgInterval);
+    } else {
+      answerMsgTimer--;
+    }
+  }, 1000);
+
+  questionNumber++;
+  updateTriviaQA(questions, questionNumber);
+
 }
 
 // function updateScore
