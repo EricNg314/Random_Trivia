@@ -80,7 +80,7 @@ p {
 
 
 
-.spotlight-image-container {
+.score-image-container {
   display: flex;
   width: unset;
   margin: 0 auto 1rem auto;
@@ -112,7 +112,7 @@ p {
   margin-top: 3rem;
 }
 
-.section-spotlight {
+.section-score {
   display: flex;
 }
 
@@ -169,7 +169,7 @@ p {
   border: 10px solid var(--quaternary-bg-color);
 }
 
-/* .question-spotlight {
+/* .question-score {
   flex-basis: 100%;
   padding: 0.5rem;
 } */
@@ -217,7 +217,7 @@ p {
 }
 
 @media screen and (max-width: 576px) {
-  .spotlight-image-container {
+  .score-image-container {
     width: 100%;
   }
 

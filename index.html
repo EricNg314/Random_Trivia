@@ -19,21 +19,22 @@
   </header>
   <main class="page-container color-primary">
     <div class="main-container color-secondary">
-      <section id="spotlight" class="section section-spotlight hidden">
-        <div class="spotlight-image-container">
-          <img class="spotlight-image" src="https://via.placeholder.com/150x150" alt="image">
-        </div>
-      </section>
       <section id="question" class="section ">
-        <h2 id='titleMessage' class="section-header color-tertiary">Ready to play?</h2>
+        <h2 id='titleMessage' class="section-header color-tertiary">Random Trivia - Ready to play?</h2>
         <div class="section-header color-tertiary">
           <div id="difficultySelector" class="flex-row">
             <button data-difficulty="easy" class="color-quaternary button">Easy</button>
-            <button data-difficulty="medium" class="color-quaternary button">Medium</button>
+            <button data-difficulty="medium" class="color-quaternary button selected">Medium</button>
             <button data-difficulty="hard" class="color-quaternary button">Hard</button>
           </div>
           <p id='timerMessage' class="">Time Remaining?</p>
           <p id='scoreMessage' class="">Score: 0</p>
+          
+          <div id="score" class="section section-score hidden">
+            <div class="score-image-container">
+              <img class="score-image" src="https://via.placeholder.com/150x150" alt="image">
+            </div>
+          </div>
         </div>
         <div class="section-content flex-column">
           <button id="startButton" class="color-tertiary button">Start Game</button>
@@ -47,7 +48,7 @@
           <button class="color-tertiary answer-button">placeholder</button>
         </div>
         <p id="answerResult" class="section-content hidden">Incorrect</p>
-        <a href="#header" aria-label="Jump to top of page">Back to top.</a>
+        <a href="#header" aria-label="Jump to top of page">Back to top.</a> 
       </section>
     </div>
   </main>

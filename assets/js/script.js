@@ -43,7 +43,7 @@ difficultySelector.addEventListener("click", function (event) {
 startButton.addEventListener("click", function (event) {
   event.preventDefault();
 
-  titleMessage.textContent = "Loading questions, good luck!";
+  titleMessage.textContent = "Random Trivia - Good luck!";
   startButton.classList.add("hidden");
   resetButton.classList.remove("hidden");
   startGame();
@@ -160,7 +160,7 @@ function updateTime() {
   if (timeRemaining < 0) {
     timeRemaining = 0;
   }
-  titleMessage.textContent = "Time Remaining: " + timeRemaining;
+  timerMessage.textContent = "Time Remaining: " + timeRemaining;
 }
 
 function updateTriviaQA(questions, questionNumber) {
