@@ -3,6 +3,7 @@ var titleMessage = document.querySelector("#titleMessage");
 var timerMessage = document.querySelector("#timerMessage");
 var startButton = document.querySelector("#startButton");
 var resetButton = document.querySelector("#resetButton");
+var questionNumbMessage = document.querySelector("#questionNumbMessage");
 var questionBox = document.querySelector("#questionBox");
 var questionAnswers = document.querySelector("#questionAnswers");
 var answerResult = document.querySelector("#answerResult");
@@ -12,6 +13,7 @@ var scoreBoard = document.querySelector("#scoreBoard");
 var submitScoreButton = document.querySelector("#submitScoreButton");
 var submitScore = document.querySelector("#submitScore");
 var username = document.querySelector("#username");
+var viewScoreBoard = document.querySelector("#viewScoreBoard");
 
 var gameInitiated = false;
 var timeDefault = 90;
@@ -23,10 +25,13 @@ var difficulty = {
 };
 var difficultyMode = "medium";
 var questions = {};
+var maxQuestions = 20;
 var questionNumber = 0;
 var score = 0;
 var reset = false;
 var isActive = false;
+
+questionNumbMessage.textContent = `Question: ${questionNumber+1} out of ${maxQuestions}`
 
 difficultySelector.addEventListener("click", function (event) {
   event.preventDefault();
@@ -47,18 +52,16 @@ startButton.addEventListener("click", function (event) {
 
   startButton.classList.add("hidden");
   resetButton.classList.remove("hidden");
+  closeScoreBoard();
   startGame();
 });
-
 
 resetButton.addEventListener("click", function (event) {
   reset = true;
   event.preventDefault();
   score = 0;
   scoreMessage.textContent = "Score: " + score;
-  scoreBoard.classList.add('hidden');
-  questionBox.classList.remove('hidden');
-  questionAnswers.classList.remove('hidden');
+  closeScoreBoard();
   if (isActive === false){
     startGame()
   }
@@ -94,8 +97,24 @@ questionAnswers.addEventListener("click", function (event) {
   }
 });
 
+viewScoreBoard.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  var showboard = viewScoreBoard.getAttribute('data-showboard')
+  if (showboard === "hidden"){
+    openScoreBoard()
+  } else {
+    closeScoreBoard()
+  }
+
+  toggleScoreBoard()
+});
+
+
 
 async function startGame() {
+  questionBox.classList.remove("hidden");
+  questionAnswers.classList.remove("hidden");
   titleMessage.textContent = "Random Trivia - Good luck!";
   isActive = true
   questionNumber = 0;
@@ -137,7 +156,7 @@ async function startGame() {
 async function getQuestions() {
   // questionBox.textContent = ""
   var apiResponse = await fetch(
-    "https://api.trivia.willfry.co.uk/questions?limit=20"
+    "https://api.trivia.willfry.co.uk/questions?limit="+maxQuestions
   )
     .then((response) => response.json())
     .then((data) => {
@@ -164,6 +183,7 @@ function updateTriviaQA(questions, questionNumber) {
   var outputChoices = [];
 
   var numbOfOptions = difficulty[difficultyMode].answers;
+  questionNumbMessage.textContent = `Question: ${questionNumber+1} out of ${maxQuestions}`
 
   // console.log(correctAnswer);
   // Restricting # of available incorrect options based on difficulty.
@@ -258,7 +278,7 @@ function endGame() {
 }
 
 function clickSaveScore() {
-  scoreBoard.classList.remove('hidden');
+  openScoreBoard();
   updateScoreBoard();
 }
 
@@ -318,4 +338,17 @@ function compareDescending( a, b ) {
   return 0;
 }
 
+function openScoreBoard(){
+  viewScoreBoard.dataset.showboard = "show";
+  updateScoreBoard();
+  scoreBoard.classList.remove("hidden");
+  questionBox.classList.add("hidden");
+  questionAnswers.classList.add("hidden");
+}
 
+function closeScoreBoard(){
+  viewScoreBoard.dataset.showboard = "hidden";
+  scoreBoard.classList.add("hidden");
+  questionBox.classList.remove("hidden");
+  questionAnswers.classList.remove("hidden");
+}

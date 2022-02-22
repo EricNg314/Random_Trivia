@@ -27,6 +27,7 @@
             <button data-difficulty="hard" class="color-quaternary button">Hard</button>
           </div>
           <p id='timerMessage' class="message-text">Time Remaining: 90</p>
+          <p id='questionNumbMessage' class="message-text">Question: 1 out of 5</p>
           <p id='scoreMessage' class="message-text">Score: 0</p>
         </div>
         <div class="section-content flex-column flex-center">
@@ -38,6 +39,7 @@
           <div class="flex-row flex-center">
             <button id="startButton" class="color-tertiary button">Start Game</button>
             <button id="resetButton" class="color-tertiary button hidden">Restart Game</button>
+            <button id="viewScoreBoard" class="color-tertiary button" data-showboard="hidden">View Score Board</button>
             <button id="saveScoreButton" class="color-tertiary button hidden">Save Score</button>
           </div>
         </div>
@@ -55,6 +57,7 @@
         </div>
         <p id="questionBox" class="color-tertiary message-box">Difficulty determines time lost and number of potential options.</p>
         <div id="questionAnswers" class="section-content question-list nothidden">
+          <button class="color-tertiary answer-button hidden">Placeholder</button>
         </div>
         <p id="answerResult" class="section-content hidden">Incorrect</p>
         <a href="#header" aria-label="Jump to top of page">Back to top.</a> 
