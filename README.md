@@ -20,8 +20,8 @@ A random trivia game. All questions are randomized from an api. Features a diffi
 Deployed Here: https://ericng314.github.io/Random_Trivia/
 
 <div style="display:flex; flex-direction: row;">
- <img src="./assets/images/site_IMG.png" width="50%">
- <img src="./assets/images/site_IMG_2.png" width="50%">
+ <img src="./assets/images/site_IMG.png" width="49%">
+ <img src="./assets/images/site_IMG_2.png" width="49%">
 </div>
 
 <br>
