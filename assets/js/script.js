@@ -107,7 +107,6 @@ viewScoreBoard.addEventListener("click", function (event) {
     closeScoreBoard()
   }
 
-  toggleScoreBoard()
 });
 
 
@@ -304,25 +303,29 @@ function updateScoreBoard(){
   scoreBoardTable.append(tableHeaderRow);
 
   // sort the current storage
-  if(currentStorage.length > 1){
-    currentStorage.sort( compareDescending );
-  }
+  if(currentStorage !== null){
+    // console.log(currentStorage);
+    if(currentStorage.length > 1){
+      currentStorage.sort( compareDescending );
+    }
 
-  // Append each row of saved scores
-  for(var i = 0; i < currentStorage.length; i++){
-    var tableRow = document.createElement('tr');
-    var scoreEle = document.createElement('td');
-    var difficultyEle = document.createElement('td');
-    var nameEle = document.createElement('td');
 
-    scoreEle.textContent = currentStorage[i].score
-    difficultyEle.textContent = currentStorage[i].difficulty
-    nameEle.textContent = currentStorage[i].name
+    // Append each row of saved scores
+    for(var i = 0; i < currentStorage.length; i++){
+      var tableRow = document.createElement('tr');
+      var scoreEle = document.createElement('td');
+      var difficultyEle = document.createElement('td');
+      var nameEle = document.createElement('td');
 
-    tableRow.append(scoreEle);
-    tableRow.append(difficultyEle);
-    tableRow.append(nameEle);
-    scoreBoardTable.append(tableRow);
+      scoreEle.textContent = currentStorage[i].score
+      difficultyEle.textContent = currentStorage[i].difficulty
+      nameEle.textContent = currentStorage[i].name
+
+      tableRow.append(scoreEle);
+      tableRow.append(difficultyEle);
+      tableRow.append(nameEle);
+      scoreBoardTable.append(tableRow);
+    }
   }
 
 }
